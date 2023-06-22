@@ -470,6 +470,11 @@ negotiator@0.6.3:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.3.tgz#58e323a72fedc0d6f9cd4d31fe49f51479590ccd"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
 
+node-inspect@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/node-inspect/-/node-inspect-2.0.0.tgz#31e6be6e877fb35d4c7bcd4c6e5cd8c5209477fc"
+  integrity sha512-vaDNU6Fa/vt8gv/PV+QoeSIPhcBnHMiNOtInxcojfagspQg5KP9HloUDGJWIacamT8Agiu51eF+fuBjrE25a6w==
+
 nodemon@^2.0.22:
   version "2.0.22"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-2.0.22.tgz#182c45c3a78da486f673d6c1702e00728daf5258"

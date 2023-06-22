@@ -1,40 +1,141 @@
 const express = require("express");
-const puppeteer = require("puppeteer");
-const cors = require('cors');
-
+const mysql = require("mysql");
+const bodyParser = require("body-parser");
 const app = express();
+const cors = require("cors");
+const puppeteer = require("puppeteer");
+
+const port = process.env.PORT || 3000;
+
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "race_result",
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.error("Error connecting to MySQL database:", err);
+    return;
+  }
+  console.log("Connected to MySQL database");
+});
+
+// enable CORS
 app.use(cors());
 
-app.get("/api/:year/:category", async (req, res) => {
+// Get all records from database
+function getRecordsFromDatabase(table) {
+  return (req, res) => {
+    connection.query(`SELECT * FROM ${table}`, (err, results) => {
+      if (err) {
+        console.error(`Error retrieving ${table}:`, err);
+        res.status(500).json({ error: `Error retrieving ${table}` });
+        return;
+      }
+      res.json(results);
+    });
+  };
+}
+
+// Get a record from database by id
+function getRecordById(table) {
+  return (req, res) => {
+    const { id } = req.params;
+    connection.query(
+      `SELECT * FROM ${table} WHERE id = ?`,
+      [id],
+      (err, results) => {
+        if (err) {
+          console.error(`Error retrieving ${table}:`, err);
+          res.status(500).json({ error: `Error retrieving ${table}` });
+          return;
+        }
+        res.json(results);
+      }
+    );
+  };
+}
+
+// Get a record from database by id
+function getRecordByCondition(table, condition) {
+  return (req, res) => {
+    const { id } = req.params;
+    connection.query(
+      `SELECT * FROM ${table} WHERE ${condition} = ?`,
+      [id],
+      (err, results) => {
+        if (err) {
+          console.error(`Error retrieving ${table}:`, err);
+          res.status(500).json({ error: `Error retrieving ${table}` });
+          return;
+        }
+        res.json(results);
+      }
+    );
+  };
+}
+
+const createRecord = (tableName, recordInfo, res) => {
+  let queryValues = [];
+  let queryPlaceholders = [];
+
+  for (let key in recordInfo) {
+    if (recordInfo[key] === "") {
+      queryValues.push(null);
+      queryPlaceholders.push("?");
+      continue;
+    }
+
+    queryValues.push(recordInfo[key]);
+    queryPlaceholders.push("?");
+  }
+
+  const query = `INSERT INTO ${tableName} (${Object.keys(recordInfo).join(
+    ", "
+  )}) VALUES (${queryPlaceholders.join(", ")})`;
+
+  connection.query(query, queryValues, (err, results) => {
+    if (err) {
+      console.error(`Error creating new record in ${tableName}:`, err);
+      res
+        .status(500)
+        .json({ error: `Error creating new record in ${tableName}` });
+      return;
+    }
+
+    const recordId = results.insertId;
+    const newRecord = { id: recordId, ...recordInfo };
+    res.status(201).json(newRecord);
+  });
+};
+
+
+app.get("/api", async (req, res) => {
   try {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    const { year, category } = req.params;
-    await page.goto(
-      `https://www.formula1.com/en/results.html/${year}/${category}.html`
-    );
-    await page.waitForSelector(".resultsarchive-table");
+    await page.goto(`https://www.formula1.com/en/results.html/2023/team.html`);
 
     const data = await page.evaluate(() => {
-      const raceItems = Array.from(
-        document.querySelectorAll(".resultsarchive-table > tbody > tr")
+      const dataList = Array.from(
+        document.querySelectorAll(".resultsarchive-filter-wrap")
       );
-      const raceResultList = [];
+      const team = Array.from(dataList[2].querySelectorAll("li"));
 
-      raceItems.forEach((item) => {
-        const grandprix = item.querySelector(".dark").innerText;
-        const date = item.querySelector(".dark").nextElementSibling.innerText;
-        const car = item.querySelector(".semi-bold").innerText;
-        const firstName = item.querySelector("span.hide-for-tablet").innerText;
-        const lastName = item.querySelector("span.hide-for-mobile").innerText;
-        const shortName = item.querySelector("span.hide-for-mobile").innerText;
-        const winner = firstName + " " + lastName;
-        const laps = item.querySelector(".bold.hide-for-mobile").innerText;
-        const time = item.querySelector(".dark.bold.hide-for-tablet").innerText;
-        raceResultList.push({ grandprix, date, winner, car, laps, time });
+      let insertedId;
+
+      team.forEach((item, index) => {
+        const teamItem = item.querySelector("a > span").innerText;
+        const obj = { team_id: index, team_name: teamItem };
+        try {
+          insertedId = createRecord("TEAMS", obj);
+        } catch (error) {
+          insertedId = "Error";
+        }
       });
-
-      return raceResultList;
+      return insertedId;
     });
 
     await browser.close();
@@ -48,47 +149,29 @@ app.get("/api/:year/:category", async (req, res) => {
   }
 });
 
-app.get("/api/filter", async (req, res) => {
-    try {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        const { year, category, id, address } = req.params;
-        await page.goto(`https://www.formula1.com/en/results.html/2023/race-result.html`);
+app.get("/api/teams", getRecordsFromDatabase("teams"));
 
-        const data = await page.evaluate(() => {
-            const option = Array.from(document.querySelectorAll(".resultsarchive-filter"));
-            const yearOption = Array.from(option[0].querySelectorAll("li > a"))
-            const categoryOption = Array.from(option[1].querySelectorAll("li > a"))
-            const yearOptionList = [];
-            const categoryOptionList = [];
+app.get("/api/teams/:id", getRecordById("teams"));
 
-            yearOption.forEach((item) => {
-            const year = item.querySelector("span").innerText;
-            yearOptionList.push({ year });
-            });
+app.get("/api/teams/:id", (req, res) => {
+  const { id } = req.params;
 
-            categoryOption.forEach((item) => {
-              const category = item.querySelector("span").innerText;
-              categoryOptionList.push({ category });
-              });
-
-
-            return {yearOptionList, categoryOptionList};
-        });
-
-        await browser.close();
-
-        res.json(data);
-    } catch (error) {
-        console.error("Crawling error:", error);
-        res
-        .status(500)
-        .json({ error: "An error occurred while crawling the website." });
+  connection.query(
+    "SELECT * FROM TEAMS t, year WHERE p.IDCategory = c.ID and c.ID = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.error("Error retrieving product:", err);
+        res.status(500).json({ error: "Error retrieving product" });
+        return;
+      }
+      res.json(results);
     }
-    });
+  );
+});
 
-app.use(cors);
-
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+//========================================== END SCRIPT ==================================
+// Start the server
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
 });

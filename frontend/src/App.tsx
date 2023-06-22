@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import ResultList from './components/ResultList';
-import FilterOption from './components/FilterOption';
 import { raceAPI } from './api/raceAPI';
 import SpinLoading from './components/SpinLoading';
-import Graph from './components/LineChart';
+import YearFilter from './components/YearFilter';
+import CategoryFilter from './components/CategoryFilter';
+
+interface Option{
+  year : number,
+  category: string
+}
 
 function App() {
   const [raceResults, setRaceResults] = useState([]);
   const [yearList, setYearList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
-  const [currentOption, setCurrentOption] = useState(
+  const [currentOption, setCurrentOption] = useState<Option>(
     {
       year: 2023,
       category: 'races',
@@ -18,7 +23,7 @@ function App() {
   )
   const [isLoading, setIsLoading] = useState(false);
 
-  const title = (currentOption.year + " " + currentOption.category).toUpperCase() + " RESULT";
+  const title = (currentOption.year + " " + currentOption.category).toUpperCase() + " RESULTS";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +50,6 @@ function App() {
         const params = {};
         const result = await raceAPI.getFilterList(params);
         if (result) {
-          console.log(result);
           setYearList(result.yearOptionList);
           setCategoryList(result.categoryOptionList);
         }
@@ -58,9 +62,24 @@ function App() {
   }, [])
 
   useEffect(() => {
-    document.title = title; // Thay đổi giá trị title tại đây
+    document.title = title; 
   }, [currentOption.year, currentOption.category]);
-  
+
+  const handleYearClick = (content: string) => {
+    setCurrentOption((prevState) => ({
+      ...prevState,
+      year: parseInt(content),
+    }));
+  }
+
+  const handleCategoryClick = (content: string) => {
+    setCurrentOption((prevState) => ({
+      ...prevState,
+      category: content,
+    }));
+  }
+
+
 
   return (
     <>
@@ -68,15 +87,14 @@ function App() {
       isLoading ? <SpinLoading size={50} color='#e10600'/>:
         <div className="content">
           <div className="filter-container">
-          <FilterOption data={yearList} />
-          <FilterOption data={categoryList} />
+          <YearFilter onClickFilter={handleYearClick} data={yearList} />
+          <CategoryFilter onClickFilter={handleCategoryClick} data={categoryList} />
           </div>
           <div className="result">
             <h1>{title}</h1>
             <ResultList data={raceResults}/>
           </div>
           <div className="chart">
-            <Graph/>
           </div>
         </div>
       }
@@ -84,4 +102,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
