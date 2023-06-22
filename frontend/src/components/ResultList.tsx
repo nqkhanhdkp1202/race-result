@@ -6,15 +6,22 @@ import type { FilterConfirmProps } from 'antd/es/table/interface';
 import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 
-const ResultList: React.FC = (props) => {
-    interface DataType {
-        key: string;
-        name: string;
-        age: number;
-        address: string;
-        tags: string[];
-    }
-    
+interface DataType {
+    key: string;
+    grandprix: string;
+    date: string;
+    winner: string;
+    car: string;
+    laps: number,
+    time: string
+  }
+  
+  interface ResultListProps {
+    data: DataType[];
+  }
+
+const ResultList: React.FC<ResultListProps> = (props) => {
+
     type DataIndex = keyof DataType;
     
     const [searchText, setSearchText] = useState('');
@@ -68,17 +75,6 @@ const ResultList: React.FC = (props) => {
                         type="link"
                         size="small"
                         onClick={() => {
-                            confirm({ closeDropdown: false });
-                            setSearchText((selectedKeys as string[])[0]);
-                            setSearchedColumn(dataIndex);
-                        }}
-                    >
-                        Filter
-                    </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
                             close();
                         }}
                     >
@@ -115,54 +111,49 @@ const ResultList: React.FC = (props) => {
     
     const columns: ColumnsType<DataType> = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            width: '30%',
-            ...getColumnSearchProps('name'),
+            title: 'GRAND PRIX',
+            dataIndex: 'grandprix',
+            key: 'grandprix',
+            ...getColumnSearchProps('grandprix'),
           },
           {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-            width: '20%',
-            ...getColumnSearchProps('age'),
+            title: 'DATE',
+            dataIndex: 'date',
+            key: 'date',
+            ...getColumnSearchProps('date'),
           },
           {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-            ...getColumnSearchProps('address'),
+            title: 'WINNER',
+            dataIndex: 'winner',
+            key: 'winner',
+            ...getColumnSearchProps('winner'),
+            sortDirections: ['descend', 'ascend'],
+          },
+          {
+            title: 'CAR',
+            dataIndex: 'car',
+            key: 'car',
+            ...getColumnSearchProps('car'),
+          },
+          {
+            title: 'LAPS',
+            dataIndex: 'laps',
+            key: 'laps',
+            ...getColumnSearchProps('laps'),
+            sortDirections: ['descend', 'ascend'],
+          },
+          {
+            title: 'TIME',
+            dataIndex: 'time',
+            key: 'time',
+            ...getColumnSearchProps('time'),
             sortDirections: ['descend', 'ascend'],
           },
     ];
     
-    const data: DataType[] = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-    ];
 
     return (
-    <Table columns={columns} dataSource={data} />
+    <Table columns={columns} dataSource={props.data} />
     )
 }
 

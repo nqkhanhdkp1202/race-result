@@ -1,40 +1,32 @@
 import React from 'react';
 
-const FilterOption: React.FC = (props) => {
-    interface DataType {
-        year: number;
-        categoty: string;
-        address: string;
-    }
+interface FilterItem{
+    content: string,
+};
 
-    const Option : DataType[] = [
-        {
-            year: 2023,
-            categoty: 'races',
-            address: 'all'
-        },
-                {
-            year: 2023,
-            categoty: 'races',
-            address: 'all'
-        },
-        {
-            year: 2023,
-            categoty: 'races',
-            address: 'all'
-        }
-    ] 
+interface FilterListProps {
+    data: FilterItem[];
+}
+
+const FilterOption: React.FC<FilterListProps> = (props) => {
 
     return (
-        <>
-        {
-            Option.map((e,i) => (
-                <div className="">
-                    {e.year} - {e.categoty} - {e.address}
-                </div>
-            ))
-        }
-        </>
+        <div className='filter-wrap'>
+                <ul className='filter-wrap-list'>
+                    {
+                        props.data.map((item,index) => (
+                            <li className='filter-wrap-list-item' key={index}>
+                                <a href="#" className="resultsarchive-filter-item-link">
+                                    <span>
+                                        {index}
+                                    </span>
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+
+        </div>
     )
 }
 
