@@ -1,52 +1,69 @@
-.filter-container {
+.content {
+  padding: 40px;
+}
+
+.spin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Chiều cao 100% của màn hình */
+}
+
+.result {
+    padding: 8px;
     background: #fff;
-    height: 144px;
-    margin-bottom: 2px;
-    
+}
+
+.filter-container {
+  background: #fff;
+  height: 124px;
+  margin-bottom: 2px;
+  padding: 24px;
 }
 
 .filter-wrap {
-    width: 48%;
-    float: left;
-    height: inherit;
-    overflow: hidden;
-    overflow-y: scroll;
-    position: relative;
+  width: 48%;
+  float: left;
+  height: inherit;
+  overflow-y: scroll;
+}
+
+.filter-wrap:first-child{
+    border-right: 1px solid  #e2e2e2;
 }
 
 .filter-wrap-list {
-    margin: 0;
-    padding: 18px 0;
-    width: 80%;
-    position: relative;
+  margin: 0;
+  padding: 18px 0;
+  width: 80%;
+  position: relative;
 }
 
 .filter-wrap-list-item a {
-    letter-spacing: normal;
-    background: #fff;
-    border: 0;
-    color: #15151e;
-    cursor: pointer;
-    display: block;
-    font-family: 'F1BoldRegular',Helvetica,sans-serif;
-    font-weight: 500;
-    font-size: 14px;
-    font-size: 1.4rem;
-    line-height: 2.58;
-    margin: 0;
-    outline: 0;
-    padding: 0 0 0 10.5%;
-    text-align: left;
-    text-decoration: none;
-    text-transform: uppercase;
-    vertical-align: middle;
+  letter-spacing: normal;
+  background: #fff;
+  border: 0;
+  color: #15151e;
+  cursor: pointer;
+  display: block;
+  font-family: "F1BoldRegular", Helvetica, sans-serif;
+  font-size: 20px;
+  line-height: 2.58;
+  margin: 0;
+  outline: 0;
+  padding: 0 0 0 10.5%;
+  text-align: left;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+  font-weight: 700;
 }
 
-.filter-wrap-list-item a span {
-    color: #15151e;
-    font-weight: 700;
+.filter-wrap-list-item:hover a span {
+  border-bottom: 1px solid #e10600;
 }
 
-.filter-wrap-list-item a span.active {
-    border-bottom: 1px solid #e00;
+.filter-wrap-list-item a.active span {
+  border-bottom: 1px solid #e10600;
+  font-weight: 800;
 }

@@ -14,20 +14,20 @@ interface DataType {
     car: string;
     laps: number,
     time: string
-  }
-  
-  interface ResultListProps {
+}
+
+interface ResultListProps {
     data: DataType[];
-  }
+}
 
 const ResultList: React.FC<ResultListProps> = (props) => {
 
     type DataIndex = keyof DataType;
-    
+
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef<InputRef>(null);
-    
+
     const handleSearch = (
         selectedKeys: string[],
         confirm: (param?: FilterConfirmProps) => void,
@@ -37,12 +37,15 @@ const ResultList: React.FC<ResultListProps> = (props) => {
         setSearchText(selectedKeys[0]);
         setSearchedColumn(dataIndex);
     };
-    
-    const handleReset = (clearFilters: () => void) => {
+
+    const handleReset = (clearFilters: () => void, 
+    confirm: (param?: FilterConfirmProps) => void) => {
         clearFilters();
         setSearchText('');
+        
+        confirm();
     };
-    
+
     const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
@@ -65,7 +68,7 @@ const ResultList: React.FC<ResultListProps> = (props) => {
                         Search
                     </Button>
                     <Button
-                        onClick={() => clearFilters && handleReset(clearFilters)}
+                        onClick={() => clearFilters && handleReset(clearFilters,confirm)}
                         size="small"
                         style={{ width: 90 }}
                     >
@@ -108,52 +111,51 @@ const ResultList: React.FC<ResultListProps> = (props) => {
                 text
             ),
     });
-    
+
     const columns: ColumnsType<DataType> = [
         {
             title: 'GRAND PRIX',
             dataIndex: 'grandprix',
             key: 'grandprix',
             ...getColumnSearchProps('grandprix'),
-          },
-          {
+        },
+        {
             title: 'DATE',
             dataIndex: 'date',
             key: 'date',
-            ...getColumnSearchProps('date'),
-          },
-          {
+        },
+        {
             title: 'WINNER',
             dataIndex: 'winner',
             key: 'winner',
             ...getColumnSearchProps('winner'),
-            sortDirections: ['descend', 'ascend'],
-          },
-          {
+        },
+        {
             title: 'CAR',
             dataIndex: 'car',
             key: 'car',
             ...getColumnSearchProps('car'),
-          },
-          {
+        },
+        {
             title: 'LAPS',
             dataIndex: 'laps',
             key: 'laps',
             ...getColumnSearchProps('laps'),
+            sorter: (a, b) => a.laps - b.laps,
             sortDirections: ['descend', 'ascend'],
-          },
-          {
+        },
+        {
             title: 'TIME',
             dataIndex: 'time',
             key: 'time',
-            ...getColumnSearchProps('time'),
-            sortDirections: ['descend', 'ascend'],
-          },
+        },
     ];
-    
+
 
     return (
-    <Table columns={columns} dataSource={props.data} />
+        <>
+        <Table columns={columns} dataSource={props.data} />
+        </>
     )
 }
 
