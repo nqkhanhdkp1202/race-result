@@ -6,11 +6,12 @@ import type { FilterConfirmProps } from 'antd/es/table/interface';
 import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { BarChart } from 'recharts';
+import LineCharts from './LineCharts';
 
 interface DataType {
     key: string;
     pos: number;
-    driver: string;
+    driver_name: string;
     nationaly: string;
     car: string;
     pts: number
@@ -144,14 +145,19 @@ const DriverList: React.FC<ResultListProps> = (props) => {
         },
     ];
 
+    const data: any = [];
+    props.data.map((item: DataType) => data.push({ name: item.driver_name, points: item.pts }));
+
+    console.log(data);
+    
 
     return (
         <>
         <Table columns={columns} dataSource={props.data} />
         <div className="chart">
-              <h2 className="chart-title">CHART DRIVERS RESULTS</h2>
+              <h2 className="chart-title">DRIVERS RESULTS CHART </h2>
               <div className="chart-list">
-                <BarChart data={props.data} />
+              <LineCharts data={data}/>
               </div>
             </div>
         </>

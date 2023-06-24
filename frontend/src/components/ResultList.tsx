@@ -5,6 +5,7 @@ import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+import MultipleChart from './MultipleChart';
 
 interface DataType {
     key: string;
@@ -151,12 +152,15 @@ const ResultList: React.FC<ResultListProps> = (props) => {
         },
     ];
 
+    const data: any = [];
+    props.data.map((item: DataType) => data.push({ name: item.race_place, laps: item.laps, time: item.time }));
 
     return (
         <>
         <Table columns={columns} dataSource={props.data} />
         <div className="chart">
-              <h2 className="chart-title">CHART RACE RESULTS</h2>
+              <h2 className="chart-title">RACE RESULTS CHART</h2>
+              <MultipleChart data={data}/>
               <div className="chart-list">
               </div>
             </div>

@@ -3,7 +3,7 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Resp
 
 interface PointValue{
   name: string,
-  value: number
+  points: number
 }
 
 interface PointValueList{
@@ -31,7 +31,7 @@ const LineCharts: React.FC<PointValueList> = (props) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="value" barSize={20} fill="#413ea0" />
+          <Bar dataKey="points" barSize={20} fill="#413ea0" />
         </ComposedChart>
       </ResponsiveContainer>
     </div>
