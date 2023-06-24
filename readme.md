@@ -1,10 +1,16 @@
 # Mô tả chi tiết
-  1. Ý tưởng ban đầu
-  - Ban đầu đọc đề bài em đã suy nghĩ tới việc thử rất nhiều cách như
-  2. Các package dùng để phát triển
-    - Crawling data từ trang web sử dụng 
+  1. Các package dùng để phát triển
+    - Crawling data từ trang web sử dụng Puppeteer: https://pptr.dev/
+    - Vẽ đồ thị sử dụng recharts: https://recharts.org/en-US
+    - Bảng dữ liệu sử dụng antD
+    - Backend sử dụng NodeJS(ExpressJS)
+  2. Ý tưởng ban đầu
+     - Sử dụng Puppeteer mở trang web muốn thực hiện crawling data, nếu mở và quét trang thành công lưu data vào file để lưu trữ (txt, xls, csv,...) sau đó thêm dữ liệu và CSDL
+     - Sử dụng NodeJS(ExpressJS) tương tác với MySQL và tạo ra api trên localhost
+     - Gọi api từ localhost và hiển thị ra trang web ở phía frontend
   3. Hiện thực tính năng
-  4. Mô tả tính năng
+     
+  5. Mô tả tính năng
     - Tìm kiếm sản phẩm theo tên
     - Sắp xếp dữ liệu tăng/giảm dần
     - Phân trang bảng dữ liệu
