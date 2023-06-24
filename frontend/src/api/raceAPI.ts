@@ -1,19 +1,32 @@
 import axiosClient from "./axiosClient";
 
 interface RaceAPI {
-  getRaceList: (year: number, category: string, params?: any) => Promise<any>;
-  getFilterList: (params?: any) => Promise<any>;
+  getRaceList: ( params?: any) => Promise<any>;
+  getDriverList: (params?: any) => Promise<any>;
+  getTeamList:(params?: any) => Promise<any>;
+  getYearsList:(params?: any) => Promise<any>;
 }
 
 export const raceAPI: RaceAPI = {
-  getRaceList: (year, category, params) => {
-    const url = `/api/${year}/${category}`;
+  getRaceList: ( params) => {
+    const url = `/races`;
     return axiosClient.get(url, { params });
   },
 
-  getFilterList: (params) => {
-    const url = `/api/filter`;
+  getDriverList(params) {
+    const url = `/drivers`;
     return axiosClient.get(url, { params });
   },
+
+  getTeamList( params){
+    const url = `/teams`;
+    return axiosClient.get(url, { params });
+  },
+
+  getYearsList( params){
+    const url = `/years/`;
+    return axiosClient.get(url, { params });
+  },
+
 };
  

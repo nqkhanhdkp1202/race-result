@@ -6,11 +6,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Chiều cao 100% của màn hình */
+  height: 100vh; 
 }
 
 .result {
-    padding: 8px;
+    padding: 8px 32px;
     background: #fff;
 }
 
@@ -22,13 +22,13 @@
 }
 
 .filter-wrap {
-  width: 48%;
+  width: 33.2%;
   float: left;
   height: inherit;
   overflow-y: scroll;
 }
 
-.filter-wrap:first-child{
+.filter-wrap:not(:last-child){
     border-right: 1px solid  #e2e2e2;
 }
 
@@ -46,8 +46,7 @@
   color: #15151e;
   cursor: pointer;
   display: block;
-  font-family: "F1BoldRegular", Helvetica, sans-serif;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 2.58;
   margin: 0;
   outline: 0;
@@ -66,4 +65,21 @@
 .filter-wrap-list-item a.active span {
   border-bottom: 1px solid #e10600;
   font-weight: 800;
+}
+
+.chart {
+  padding: 20px;
+  min-height: 50vh;
+  background-color: white;
+}
+
+.chart-list {
+  height: 50vh;
+}
+
+.chart-list-item {
+  margin: auto;
+  margin-top: 20px;
+  width: 50%;
+  height: 100%;
 }

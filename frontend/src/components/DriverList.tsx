@@ -5,22 +5,22 @@ import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+import { BarChart } from 'recharts';
 
 interface DataType {
     key: string;
-    race_place: string;
-    date: string;
-    winner: string;
+    pos: number;
+    driver: string;
+    nationaly: string;
     car: string;
-    laps: number,
-    time: string
+    pts: number
 }
 
 interface ResultListProps {
     data: DataType[];
 }
 
-const ResultList: React.FC<ResultListProps> = (props) => {
+const DriverList: React.FC<ResultListProps> = (props) => {
 
     type DataIndex = keyof DataType;
 
@@ -114,21 +114,22 @@ const ResultList: React.FC<ResultListProps> = (props) => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: 'GRAND PRIX',
-            dataIndex: 'race_place',
-            key: 'race_place',
-            ...getColumnSearchProps('race_place'),
+            title: 'POS',
+            dataIndex: 'driver_id',
+            key: 'driver_id',
+            sorter: (a, b) => a.pos - b.pos,
+            sortDirections: ['descend', 'ascend'],
         },
         {
-            title: 'DATE',
-            dataIndex: 'date',
-            key: 'date',
+            title: 'DRIVER',
+            dataIndex: 'driver_name',
+            key: 'driver_name',
         },
         {
-            title: 'WINNER',
-            dataIndex: 'winner',
-            key: 'winner',
-            ...getColumnSearchProps('winner'),
+            title: 'NATIONALY',
+            dataIndex: 'nationaly',
+            key: 'nationaly',
+            ...getColumnSearchProps('nationaly'),
         },
         {
             title: 'CAR',
@@ -137,17 +138,9 @@ const ResultList: React.FC<ResultListProps> = (props) => {
             ...getColumnSearchProps('car'),
         },
         {
-            title: 'LAPS',
-            dataIndex: 'laps',
-            key: 'laps',
-            ...getColumnSearchProps('laps'),
-            sorter: (a, b) => a.laps - b.laps,
-            sortDirections: ['descend', 'ascend'],
-        },
-        {
-            title: 'TIME',
-            dataIndex: 'time',
-            key: 'time',
+            title: 'PTS',
+            dataIndex: 'pts',
+            key: 'pts',
         },
     ];
 
@@ -156,12 +149,13 @@ const ResultList: React.FC<ResultListProps> = (props) => {
         <>
         <Table columns={columns} dataSource={props.data} />
         <div className="chart">
-              <h2 className="chart-title">CHART RACE RESULTS</h2>
+              <h2 className="chart-title">CHART DRIVERS RESULTS</h2>
               <div className="chart-list">
+                <BarChart data={props.data} />
               </div>
             </div>
         </>
     )
 }
 
-export default ResultList;
+export default DriverList;
