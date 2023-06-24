@@ -147,10 +147,7 @@ const DriverList: React.FC<ResultListProps> = (props) => {
 
     const data: any = [];
     props.data.map((item: DataType) => data.push({ name: item.driver_name, points: item.pts }));
-
-    console.log(data);
     
-
     return (
         <>
         <Table columns={columns} dataSource={props.data} />

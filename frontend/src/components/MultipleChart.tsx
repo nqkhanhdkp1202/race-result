@@ -11,7 +11,6 @@ interface PointValueList{
   data: PointValue[]
 }
 
-
 const MultipleChart: React.FC<PointValueList> = (props) => {
 
   return (
