@@ -22,12 +22,11 @@ interface ResultListProps {
 }
 
 const ResultList: React.FC<ResultListProps> = (props) => {
-
-    type DataIndex = keyof DataType;
-
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef<InputRef>(null);
+
+    type DataIndex = keyof DataType;
 
     const handleSearch = (
         selectedKeys: string[],
@@ -113,6 +112,9 @@ const ResultList: React.FC<ResultListProps> = (props) => {
             ),
     });
 
+    const data: any = [];
+    props.data.map((item: DataType) => data.push({ name: item.race_place, laps: item.laps, time: item.time }));
+
     const columns: ColumnsType<DataType> = [
         {
             title: 'GRAND PRIX',
@@ -151,9 +153,6 @@ const ResultList: React.FC<ResultListProps> = (props) => {
             key: 'time',
         },
     ];
-
-    const data: any = [];
-    props.data.map((item: DataType) => data.push({ name: item.race_place, laps: item.laps, time: item.time }));
 
     return (
         <>

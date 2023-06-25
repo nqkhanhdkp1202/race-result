@@ -1,17 +1,16 @@
 import React from 'react';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart } from 'recharts';
 
-interface PointValue{
+interface PointValue {
   name: string,
   points: number
 }
 
-interface PointValueList{
+interface PointValueList {
   data: PointValue[]
 }
 
 const LineCharts: React.FC<PointValueList> = (props) => {
-
   return (
     <div className="chart-list-item">
       <ResponsiveContainer width="100%" height="100%">

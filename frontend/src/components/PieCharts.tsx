@@ -51,7 +51,7 @@ const PieCharts: React.FC<PointValueList> = (props) => {
             dataKey="value"
           >
             {props.data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
           <Tooltip />

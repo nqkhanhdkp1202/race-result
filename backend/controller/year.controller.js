@@ -1,6 +1,7 @@
 const pool = require("../database/index");
 
 const yearController = {
+  
   getYearList: async (req, res) => {
     try {
       const [rows, fields] = await pool.query("SELECT * FROM YEARS");
@@ -12,6 +13,7 @@ const yearController = {
       });
     }
   },
+  
   getYearByID: async (req, res) => {
     try {
       const { id } = req.params;

@@ -1,6 +1,7 @@
 const pool = require('../database/index')
 
 const raceController = {
+
   getRaceList: async (req, res) => {
     try {
         const [rows,fields] = await pool.query("SELECT * FROM RACES")
@@ -12,6 +13,7 @@ const raceController = {
       })
     }
   },
+
   getRaceByID: async (req,res) => {
     try{
         const {id} = req.params
@@ -25,6 +27,7 @@ const raceController = {
           }) 
     }
   },
+  
 };
 
 module.exports = raceController;

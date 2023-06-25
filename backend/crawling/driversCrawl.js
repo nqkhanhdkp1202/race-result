@@ -1,16 +1,14 @@
 const fs = require("fs");
-const driverController = require("../controller/driver.controller");
-const pool = require("../database/index");
 
 const driverCrawl = async (browser) => {
+  
   const driverpage = await browser.newPage();
 
   await driverpage.goto(
     "https://www.formula1.com/en/results.html/2023/drivers.html"
   );
 
-
-let driver_id = 1;
+  let driver_id = 1;
 
   const driverHandles = await driverpage.$$(
     ".resultsarchive-table > tbody > tr"
@@ -32,20 +30,22 @@ let driver_id = 1;
         driverHandle
       );
       const nationaly = await driverpage.evaluate(
-        (el) =>
-          el.querySelector("td.dark.semi-bold.uppercase").textContent,
+        (el) => el.querySelector("td.dark.semi-bold.uppercase").textContent,
         driverHandle
       );
       const pts = await driverpage.evaluate(
-        (el) =>
-          el.querySelector("td.dark.bold").textContent,
+        (el) => el.querySelector("td.dark.bold").textContent,
         driverHandle
       );
       let driver_name = firstName + " " + lastName;
-      fs.appendFile("drivers.csv", `${driver_id},${driver_name},${nationaly},${team_name},${pts}\n`, function (err) {
-        if (err) throw err;
-        console.log("Saved");
-      });
+      fs.appendFile(
+        "drivers.csv",
+        `${driver_id},${driver_name},${nationaly},${team_name},${pts}\n`,
+        function (err) {
+          if (err) throw err;
+          console.log("Saved");
+        }
+      );
       driver_id++;
     } catch (error) {
       console.log(error);

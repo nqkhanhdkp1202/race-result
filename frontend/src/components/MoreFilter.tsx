@@ -5,7 +5,6 @@ interface MoreFilterProps {
 }
 
 const MoreFilter: React.FC<MoreFilterProps> = (props) => {
-
     return (
         <div className='filter-wrap'>
             <div className="filter-wrap-line">

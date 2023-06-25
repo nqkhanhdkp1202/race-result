@@ -5,9 +5,6 @@ import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import Chart from './LineCharts';
-import { LineChart } from 'recharts';
-import LineCharts from './LineCharts';
 import PieCharts from './PieCharts';
 
 interface DataType {
@@ -22,12 +19,11 @@ interface ResultListProps {
 }
 
 const TeamList: React.FC<ResultListProps> = (props) => {
-
-    type DataIndex = keyof DataType;
-
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef<InputRef>(null);
+
+    type DataIndex = keyof DataType;
 
     const handleSearch = (
         selectedKeys: string[],
@@ -43,7 +39,6 @@ const TeamList: React.FC<ResultListProps> = (props) => {
         confirm: (param?: FilterConfirmProps) => void) => {
         clearFilters();
         setSearchText('');
-
         confirm();
     };
 
@@ -113,6 +108,10 @@ const TeamList: React.FC<ResultListProps> = (props) => {
             ),
     });
 
+
+    const chartData: any = [];
+    props.data.map((item: DataType) => chartData.push({ name: item.team_name, value: item.pts }));
+
     const columns: ColumnsType<DataType> = [
         {
             title: 'POS',
@@ -134,16 +133,13 @@ const TeamList: React.FC<ResultListProps> = (props) => {
         },
     ];
 
-    const data: any = [];
-    props.data.map((item: DataType) => data.push({ name: item.team_name, value: item.pts }));
-
     return (
         <>
             <Table columns={columns} dataSource={props.data} />
             <div className="chart">
                 <h2 className="chart-title">TEAMS RESULTS CHART</h2>
                 <div className="chart-list">
-                    <PieCharts data={data} />
+                    <PieCharts data={chartData} />
                 </div>
             </div>
         </>
