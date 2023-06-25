@@ -10,8 +10,28 @@
   - Gọi api từ localhost và hiển thị ra trang web ở phía frontend.
   - Sử dụng table component của antD để hiển thị dữ liệu từ api
 ![ERD](https://lh3.googleusercontent.com/fife/APg5EObiLnWu6uasfa9iBMfGrqpqiU9WZoENwU8x7e4gpX0mV6v4-fUbIQy3M7_MhOVDf0Nbr_trXBtfUmDJy7G7Esyk4ZiFLorJy6Nvi-G0nm7rtUqvlth9wiUc97u0a_ikCBDAGYxw5NR0idS6unZwJ0RhW3zPzHhUzH1PqYg5Rsr2nHBnMhKWxux8Jarx5f6cjT6KzpQ8JVDBNxwMWa9rK0wGwt1W-DGAbhtfV-AGf546bEqUl0krf3LLvLw-dWlA6GPMJsI4PYtxlLjyj5zL5djXnkIf9CWiiUnphzkdxSYZckauG-PIpixvx40wnBYZ4cYFuhfysYPOtHrXpJ_-jY9TeGEOOl5DTnK-L81n11E19rF0h-6A7hQnbC53uFr27mT00iKPbGuLOb-PhZJUmtFtuMyBSD7JQ6yGMjqRear6soq6K1xeh9KxdySeMB6tz4O5-MLgd-VNc8MpxXebRh7OxQMX1hccm74ZhMJ69bq9i7D74CwE6JV-NWkLPeAhBRFL_p64gFZIXRD8LYE6APuRQfCdf9Z9LvX3_p9YDBDtrHOMTAuhwHb0xk-yMHt-ruvaJXCbfKrhK0bSOX6sPcHz0uFCVpZ8FSDGGLgKTEKIBnqZDujVI-oK6FggU94wmWcYxL9-_zuwchG50cP3DW3BShVfiWcldgYdb1jZMK7dKsLvEtQvv8tmPbiiH2PsQrKxVnvSBm1ZmXz02S-OMno-8wg2DKfM2gQhXiu4WmCBr9UCmYcVCx827CrvArKU22L1jdfnxjMXuF4f7h61IIM6SNpLXdFNDtuBHuFSQOGp6jHhiL_5TqwgcsEocNhSwLe8Ppsu6cvg3_fkW74pSrgiEwbMzsrmyUAh3q_TG6I2DFblcOqh5NeBX6QbBvnit3gjaE5Pc5KlDuBSasDaI6EGMzO2PcXh16yxLhlIilCM1ERHay5kxL9il-mJjRLRavZHAbmXq0yEKOf6NjeaqCBwpArxI26-dzGCOt8T4RcNj7Ckt_SevnQeLuzJiBooA8toPi0fP9j0Hx8mh2iKQEIIstTYtNJGJB8sj8mVXApy-gvYlQ9D1RRnUoS6VVrmkC1gzY7A7ZURZg9ja8QFSbcDZCzSOEvvGfx-2dGYvNRH-WipE_tXhx5Odr3FLKEr_EXlah-kGlpCpVJi9itjYUdDRFk0suFBxkeFto8-A2xhj-TKQaOeU-pKVaI5cRBH_kBulNVceaqHjNSZq0LjVHBGc2aDs-Mw9ujyvtAplhzhCfBmGohMzoi0eep7DtqHF-hpBCF0hjOWCbGRcmpFKvQGv59vQ7PoyxjluDgWCO_L6J3AwoI0WoaYJQ0repI8hhkLVMerV6AZ-XWSgOAMOFy4MuHArbQ1lgDEnh3oGP-D-NhQV4Tz-4se64BKINLcoWlyZB0ZKrTF2gRM3a1QA-4cVZibjlM-YwwY91Nh9aMdP43bJr_WusQ1XkPMNLWJ0dnKGu_dPYX7aGIJYOwNyFlTk-e_58Xg0W0uzWVsbuRhCR4tY3M56A_6v91ZBwvdMqUgLURVZrzY_J1LlA=w2880-h1476)
-		 
-  ### 3. Mô tả tính năng 
+
+  ### 3. Lập trình, phát triển phần mềm
+  #### a. Về phía backend
+  ##### Crawling dữ liệu từ website:
+  - Truy cập website (https://www.formula1.com/en/results.html/2023/races.html) để xem và phân tích các thẻ HTML có dữ liệu cần crawl và chuẩn bị danh sách các URL cần crawl
+  - Sử dụng Puppeteer và mở một browser mới với các URL đã liệt kê (các file nằm trong thư mục backend/crawling) để crawl. Cách select các phần tử sẽ gần giống với CSS selector.
+  - Chạy vòng lặp qua tất cả các element vừa select và lấy toàn bộ nội dung (text) bằng innerText.
+  - Trả về một mảng các object và lưu nó ra file đuôi .csv với "fs" với tên tương ứng
+  ##### Tương tác với MySQL để tạo ra API
+  - Tạo ra một router để khi nhận được request đúng route sẽ response lại với route tương ứng được cấu hình sẵn (ví dụ request đến /races/ với phương thức GET).
+  - Tạo ra các controller tương ứng với nhiệm vụ (ví dụ như getRaceList) để trả về khi gọi đến.
+  #### b. Về phía frontend
+  - Tạo project React project bằng Vite giúp rút ngắn thời gian set up.
+  - Các CSS chung cho trang web được cấu hình ở file index.css, các CSS dùng cho các component được cấu hình tại App.css
+  ##### Component loading
+  - Sử dụng LoadingOutlined của antD có thể truyền vào `color` và `size` thông qua props, dùng để hiển thị khi trang web được thực hiện các chức năng bất đồng bộ.
+  ##### Các component List
+  - Tuỳ vào filter đang chọn thì table dữ liệu tương ứng sẽ được load ra.
+  - Dữ liệu được load lên thông qua API
+  #### Các component chart
+  #### Các component filter
+  ### 4. Mô tả tính năng 
   #### a. Lọc dữ liệu theo danh mục: nguời dùng có thể chọn phân loại bảng đang hiển thị bằng cách chọn các filter (như hình), mỗi một danh mục sẽ  có dữ liệu khác nhau
   - Các tuỳ chọn danh mục
 
