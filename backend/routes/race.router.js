@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router();
 
 const raceController = require('../controller/race.controller');
-
 const teamController = require('../controller/team.controller');
 const driverController = require('../controller/driver.controller');
 const yearController = require('../controller/year.controller');

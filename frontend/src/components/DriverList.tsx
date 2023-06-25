@@ -22,12 +22,11 @@ interface ResultListProps {
 }
 
 const DriverList: React.FC<ResultListProps> = (props) => {
-
-    type DataIndex = keyof DataType;
-
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef<InputRef>(null);
+
+    type DataIndex = keyof DataType;
 
     const handleSearch = (
         selectedKeys: string[],
@@ -39,11 +38,11 @@ const DriverList: React.FC<ResultListProps> = (props) => {
         setSearchedColumn(dataIndex);
     };
 
-    const handleReset = (clearFilters: () => void, 
-    confirm: (param?: FilterConfirmProps) => void) => {
+    const handleReset = (clearFilters: () => void,
+        confirm: (param?: FilterConfirmProps) => void) => {
         clearFilters();
         setSearchText('');
-        
+
         confirm();
     };
 
@@ -69,7 +68,7 @@ const DriverList: React.FC<ResultListProps> = (props) => {
                         Search
                     </Button>
                     <Button
-                        onClick={() => clearFilters && handleReset(clearFilters,confirm)}
+                        onClick={() => clearFilters && handleReset(clearFilters, confirm)}
                         size="small"
                         style={{ width: 90 }}
                     >
@@ -147,15 +146,15 @@ const DriverList: React.FC<ResultListProps> = (props) => {
 
     const data: any = [];
     props.data.map((item: DataType) => data.push({ name: item.driver_name, points: item.pts }));
-    
+  
     return (
         <>
-        <Table columns={columns} dataSource={props.data} />
-        <div className="chart">
-              <h2 className="chart-title">DRIVERS RESULTS CHART </h2>
-              <div className="chart-list">
-              <LineCharts data={data}/>
-              </div>
+            <Table columns={columns} dataSource={props.data} />
+            <div className="chart">
+                <h2 className="chart-title">DRIVERS RESULTS CHART </h2>
+                <div className="chart-list">
+                    <LineCharts data={data} />
+                </div>
             </div>
         </>
     )

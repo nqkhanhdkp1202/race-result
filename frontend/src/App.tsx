@@ -7,7 +7,6 @@ import YearFilter from './components/YearFilter';
 import CategoryFilter from './components/CategoryFilter';
 import DriverList from './components/DriverList';
 import TeamList from './components/TeamList';
-import BarChart from './components/LineCharts';
 import MoreFilter from './components/MoreFilter';
 
 interface Option {
@@ -44,7 +43,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const list : any = [];
+      const list: any = [];
       try {
         const params = {};
         const yearResult = await raceAPI.getYearsList(params);
@@ -55,7 +54,7 @@ function App() {
           const result = await raceAPI.getRaceList(params);
           if (result.data) {
             setRaceResults(result.data);
-            result.data.map((item: RaceData) =>list.push(item.race_place));
+            result.data.map((item: RaceData) => list.push(item.race_place));
           }
         }
         if (currentOption.category === 'drivers') {
